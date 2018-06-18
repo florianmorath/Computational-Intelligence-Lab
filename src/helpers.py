@@ -22,3 +22,25 @@ def load_data():
     return X
 
     
+def write_submission_file(X_pred, file_name){
+    # create submission string
+    ratings = []
+    with open('../data/sampleSubmission.csv') as file:
+        file.readline() # remove header
+        for line in file:
+            key, value = line.split(",")
+            rating = int(value)
+            row_string, col_string = key.split("_")
+            row = int(row_string[1:])
+            col = int(col_string[1:])
+            ratings.append((row-1, col-1, rating))
+
+    output = "Id,Prediction\n"
+    for (row, col, _) in ratings:
+        output += "r%d_c%d,%f\n" % (row + 1, col + 1, X_pred[row, col])
+        
+    # write file    
+    with open(file_name, 'w') as output_file:
+        output_file.write(output)
+    return output
+}
