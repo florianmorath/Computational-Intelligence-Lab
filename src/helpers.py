@@ -1,3 +1,5 @@
+import numpy as np
+
 def load_data():
     # X has dim (USER_COUNT x ITEM_COUNT)
     USER_COUNT = 10000
