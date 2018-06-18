@@ -22,7 +22,7 @@ def load_data():
     return X
 
     
-def write_submission_file(X_pred, file_name){
+def write_submission_file(X_pred, file_name):
     # create submission string
     ratings = []
     with open('../data/sampleSubmission.csv') as file:
@@ -43,4 +43,3 @@ def write_submission_file(X_pred, file_name){
     with open(file_name, 'w') as output_file:
         output_file.write(output)
     return output
-}
