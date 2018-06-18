@@ -1,4 +1,4 @@
-def load_data(){
+def load_data():
     # X has dim (USER_COUNT x ITEM_COUNT)
     USER_COUNT = 10000
     ITEM_COUNT = 1000
@@ -18,4 +18,5 @@ def load_data(){
         for (row, col, rating) in ratings:
             X[row, col] = rating
     return X
-}
+
+    
