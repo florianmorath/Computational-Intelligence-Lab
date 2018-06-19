@@ -1,4 +1,5 @@
 import numpy as np
+import os
 
 def load_data():
     # X has dim (USER_COUNT x ITEM_COUNT)
@@ -39,7 +40,7 @@ def write_submission_file(X_pred, file_name):
     for (row, col, _) in ratings:
         output += "r%d_c%d,%f\n" % (row + 1, col + 1, X_pred[row, col])
         
-    # write file    
-    with open(file_name, 'w') as output_file:
+    # write file 
+    with open(os.path.join('../predictions_csv', file_name), 'w') as output_file:
         output_file.write(output)
     return output
