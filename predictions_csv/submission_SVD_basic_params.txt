@@ -1,2 +1,8 @@
 submission_SVD_basic_0.csv:
 k = 40
+
+submission_SVD_basic_1.csv:
+k = 15
+
+submission_SVD_basic_2.csv:
+k = 10
