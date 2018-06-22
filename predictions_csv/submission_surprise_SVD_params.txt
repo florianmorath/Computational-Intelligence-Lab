@@ -1,2 +1,5 @@
 submission_surprise_SVD_0.csv:
 algo = SVD(n_epochs=19, lr_all=0.0080655611939959484, reg_all=0.042201220509606799, n_factors=9)
+
+submission_surprise_SVD_1.csv:
+algo = SVD(n_factors=5)
