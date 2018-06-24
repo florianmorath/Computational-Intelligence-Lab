@@ -1,1 +1,6 @@
+submission_0:
 NMF(n_epochs=256, reg_pu=0.1686198480906289, reg_qi=0.13702113849142605, n_factors=15, reg_bu=0.34284468705230597, reg_bi=0.93748069281861202)
+
+
+submission_1:
+{'biased': False, 'n_epochs': 193, 'n_factors': 31, 'reg_pu': 0.066509535353532462, 'reg_qi': 0.10446537083767632}
