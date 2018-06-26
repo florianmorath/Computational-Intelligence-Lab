@@ -9,7 +9,7 @@
 import helpers
 from surprise_helpers import CustomReader, get_ratings_from_predictions
 from surprise import Reader, Dataset
-
+import time
 
 # ## Data loading
 # We load the data using our custom reader.
@@ -33,6 +33,7 @@ data = Dataset.load_from_file(filepath, reader=reader)
 
 from surprise import KNNBasic, KNNWithMeans, KNNWithZScore, KNNBaseline
 from surprise.model_selection import RandomizedSearchCV
+from scipy import stats
 import pandas as pd
 
 algos = [
@@ -52,9 +53,9 @@ param_grid = {
     },
     'bsl_options': {
         'method': ['als'],
-        'n_epochs': stats.randint(10, 15),
-        'reg_i': stats.randint(8, 12),
-        'reg_u': stats.randint(12, 18)
+        'n_epochs': range(10, 15),
+        'reg_i': range(8, 12),
+        'reg_u': range(12, 18)
     }
 }
 
@@ -69,19 +70,19 @@ def fit_and_store(algos):
     for algo, algo_name in algos:
         rs = RandomizedSearchCV(algo,
                                 param_grid,
-                                n_iter=25,
-                                measures=['rmse'], cv=5, n_jobs=-1,
+                                n_iter=1,
+                                measures=['rmse'], cv=2, n_jobs=1,
                                 refit=True # so we can use test() directly
                                 )
 
         rs.fit(data)
-        timestamp = time.now()
-        print('Best score {} with parameters:'.format(rs.best_score['rmse']))
+        timestamp = time.time()
+        print('Best score {} of {} with parameters:'.format(rs.best_score['rmse'], timestamp))
         best_params_df = pd.DataFrame.from_dict(rs.best_params['rmse'])
-        best_params_df.to_pickle('{}_best_params_{}.pkl'.format(algo_name))
+        best_params_df.to_pickle('{}_best_params_{}.pkl'.format(algo_name, timestamp))
         results_df = pd.DataFrame.from_dict(rs.cv_results)
-        results_df.to_pickle('{}_results_{}.pkl')
-        res.append((rs, algoname, timestamp))
+        results_df.to_pickle('{}_results_{}.pkl'.format(algo_name, timestamp))
+        best_algos.append((rs, algo_name, timestamp))
     return best_algos
 
 
