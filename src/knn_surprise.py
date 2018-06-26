@@ -37,17 +37,17 @@ from scipy import stats
 import pandas as pd
 
 algos = [
-    (KNNBasic, 'KNNBasic'),
+   # (KNNBasic, 'KNNBasic'),
     (KNNWithMeans, 'KNNWithMeans'),
     (KNNWithZScore, 'KNNWithZScore'),
     (KNNBaseline, 'KNNBaseline')
 ]   
 param_grid = {
-    'k': stats.randint(10,80),
+    'k': stats.randint(10,200),
     'min_k': stats.randint(1, 9),
     'sim_options': {
         'name': ['cosine', 'msd', 'pearson', 'pearson_baseline'],
-        'user_based': [False, True],
+        'user_based': [True],
         'min_support': [1, 10],
         'shrinkage': [0, 100]
     },
@@ -70,8 +70,8 @@ def fit_and_store(algos):
     for algo, algo_name in algos:
         rs = RandomizedSearchCV(algo,
                                 param_grid,
-                                n_iter=25,
-                                measures=['rmse'], cv=10, n_jobs=-1,
+                                n_iter=5,
+                                measures=['rmse'], cv=3, n_jobs=-1,
                                 refit=True # so we can use test() directly
                                 )
 
