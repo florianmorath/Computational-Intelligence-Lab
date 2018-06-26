@@ -38,7 +38,7 @@ import pandas as pd
 
 algos = [
     (KNNBasic, 'KNNBasic'),
-    (KNNWithMeans, 'KNNBasic'),
+    (KNNWithMeans, 'KNNWithMeans'),
     (KNNWithZScore, 'KNNWithZScore'),
     (KNNBaseline, 'KNNBaseline')
 ]   
@@ -70,8 +70,8 @@ def fit_and_store(algos):
     for algo, algo_name in algos:
         rs = RandomizedSearchCV(algo,
                                 param_grid,
-                                n_iter=1,
-                                measures=['rmse'], cv=2, n_jobs=1,
+                                n_iter=25,
+                                measures=['rmse'], cv=10, n_jobs=-1,
                                 refit=True # so we can use test() directly
                                 )
 
@@ -82,8 +82,7 @@ def fit_and_store(algos):
         best_params_df.to_pickle('{}_best_params_{}.pkl'.format(algo_name, timestamp))
         results_df = pd.DataFrame.from_dict(rs.cv_results)
         results_df.to_pickle('{}_results_{}.pkl'.format(algo_name, timestamp))
-        best_algos.append((rs, algo_name, timestamp))
-    return best_algos
+        yield (rs, algo_name, timestamp)
 
 
 # In[ ]:
