@@ -1,0 +1,2 @@
+submission_0.csv:
+model = ExplicitFactorizationModel(loss='regression', embedding_dim=5, n_iter=100, batch_size=256, learning_rate=0.005, l2=0.0, sparse=False)
