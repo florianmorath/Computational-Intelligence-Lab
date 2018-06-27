@@ -33,6 +33,7 @@ data = Dataset.load_from_file(filepath, reader=reader)
 
 from surprise import KNNBasic, KNNWithMeans, KNNWithZScore, KNNBaseline
 from surprise.model_selection import RandomizedSearchCV
+from surprise import dump
 from scipy import stats
 import pandas as pd
 
@@ -82,6 +83,7 @@ def fit_and_store(algos):
         best_params_df.to_pickle('{}_best_params_{}.pkl'.format(algo_name, timestamp))
         results_df = pd.DataFrame.from_dict(rs.cv_results)
         results_df.to_pickle('{}_results_{}.pkl'.format(algo_name, timestamp))
+        dump.dump('{}_algo.pkl', algo=rs.best_estimator)
         yield (rs, algo_name, timestamp)
 
 
