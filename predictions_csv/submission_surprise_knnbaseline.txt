@@ -1,2 +1,5 @@
 submission_0.csv:
 {'k': 190, 'sim_options': {'name': 'pearson_baseline', 'shrinkage': 191, 'user_based': True}}
+
+submission_1.csv
+{'k': 237, 'sim_options': {'name': 'pearson_baseline', 'shrinkage': 279, 'user_based': True}}

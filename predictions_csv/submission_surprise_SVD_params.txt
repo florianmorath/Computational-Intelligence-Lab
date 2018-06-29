@@ -3,3 +3,7 @@ algo = SVD(n_epochs=19, lr_all=0.0080655611939959484, reg_all=0.0422012205096067
 
 submission_surprise_SVD_1.csv:
 algo = SVD(n_factors=5)
+
+
+submission_surprise_SVD_2.csv:
+{'lr_all': 0.0088540357639887227, 'n_factors': 94, 'reg_all': 0.060980144283391415}
