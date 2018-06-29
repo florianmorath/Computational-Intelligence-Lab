@@ -11,6 +11,7 @@ def get_test_file_path():
 
 
 def parse_line(line):
+    # Format is user, item, rating
     key, value = line.split(",")
     rating = int(value)
     row_string, col_string = key.split("_")
