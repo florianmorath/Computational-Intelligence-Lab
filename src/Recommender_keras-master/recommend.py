@@ -21,13 +21,22 @@ ratings_a = []
 for pred in predictions:
     ratings_a.append(pred[0])
 
+
+def parse_line(line):
+    key, value = line.split(",")
+    rating = int(value)
+    row_string, col_string = key.split("_")
+    row = int(row_string[1:])
+    col = int(col_string[1:])
+    return row, col, rating
+
+
 ratings = []
 with open('sampleSubmission.csv') as file:
     file.readline()
     for line in file:
-        row, col = parse_line(line)
-        rating = model.predict([get_array(col), get_array(row)])
-        ratings.append((row,col,rating))
+        row, col, rat = parse_line(line)
+        ratings.append((row,col,rat))
 
 # Build output string
 output = "Id,Prediction\n"
