@@ -11,7 +11,7 @@ def rmse(y_true, y_pred):
 
 model = get_model_3(max_work, max_user)
 
-history = model.fit([get_array(train["movieId"]), get_array(train["userId"])], get_array(train["rating"]), nb_epoch=1,
+history = model.fit([get_array(train["movieId"]), get_array(train["userId"])], get_array(train["rating"]), nb_epoch=10,
                     validation_split=0, verbose=2)
 
 predictions = model.predict([get_array(test["movieId"]), get_array(test["userId"])])
@@ -44,5 +44,5 @@ for (row, col, rat) in ratings:
     output += "r%d_c%d,%f\n" % (row , col, ratings_a.pop(0))
 
 # Write file 
-with open('sub_0.csv', 'w') as output_file:
+with open('sub_5.csv', 'w') as output_file:
     output_file.write(output)

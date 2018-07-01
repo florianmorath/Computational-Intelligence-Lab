@@ -63,56 +63,8 @@ def get_data():
     return train, test, max_user, max_work, mapping_work
 
 
-
-
-def get_model_1(max_work, max_user):
-    dim_embedddings = 30
-    bias = 3
-    # inputs
-    w_inputs = Input(shape=(1,), dtype='int32')
-    w = Embedding(max_work+1, dim_embedddings, name="work")(w_inputs)
-
-    # context
-    u_inputs = Input(shape=(1,), dtype='int32')
-    u = Embedding(max_user+1, dim_embedddings, name="user")(u_inputs)
-    o = multiply([w, u])
-    o = Dropout(0.5)(o)
-    o = Flatten()(o)
-    o = Dense(1)(o)
-
-    rec_model = Model(inputs=[w_inputs, u_inputs], outputs=o)
-    #rec_model.summary()
-    rec_model.compile(loss='mae', optimizer='adam', metrics=["mae"])
-
-    return rec_model
-
-
-def get_model_2(max_work, max_user):
-    dim_embedddings = 30
-    bias = 1
-    # inputs
-    w_inputs = Input(shape=(1,), dtype='int32')
-    w = Embedding(max_work+1, dim_embedddings, name="work")(w_inputs)
-    w_bis = Embedding(max_work + 1, bias, name="workbias")(w_inputs)
-
-    # context
-    u_inputs = Input(shape=(1,), dtype='int32')
-    u = Embedding(max_user+1, dim_embedddings, name="user")(u_inputs)
-    u_bis = Embedding(max_user + 1, bias, name="userbias")(u_inputs)
-    o = multiply([w, u])
-    o = concatenate([o, u_bis, w_bis])
-    o = Dropout(0.5)(o)
-    o = Flatten()(o)
-    o = Dense(1)(o)
-
-    rec_model = Model(inputs=[w_inputs, u_inputs], outputs=o)
-    #rec_model.summary()
-    rec_model.compile(loss='mae', optimizer='adam', metrics=["mae"])
-
-    return rec_model
-
 def get_model_3(max_work, max_user):
-    dim_embedddings = 30
+    dim_embedddings = 35
     bias = 1
     # inputs
     w_inputs = Input(shape=(1,), dtype='int32')

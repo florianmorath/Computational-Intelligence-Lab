@@ -1,0 +1,3 @@
+NN_1:
+emb_dim=30
+epochs=10
