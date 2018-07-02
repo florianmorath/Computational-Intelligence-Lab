@@ -2,9 +2,14 @@ from model import *
 from sklearn.metrics import mean_absolute_error
 import pickle
 
+## SET BACKEND
+import matplotlib as mpl
+mpl.use('TkAgg')
+import matplotlib.pyplot as plt
+
 
 def rmse(y_true, y_pred):
-	return backend.sqrt(backend.mean(backend.square(y_pred - y_true), axis=-1))
+    return backend.sqrt(backend.mean(backend.square(y_pred - y_true), axis=-1))
 
 def parse_line(line):
     key, value = line.split(",")
@@ -25,8 +30,6 @@ model = get_model(max_work, max_user)
 # train the model
 history = model.fit([get_array(train["movieId"]), get_array(train["userId"])], get_array(train["rating"]), nb_epoch=20,
                     validation_split=0.2, verbose=2)
-
-# TODO: create plot based on history -> https://chrisalbon.com/deep_learning/keras/visualize_loss_history/
 
 # Get training and test loss histories
 training_loss = history.history['loss']
