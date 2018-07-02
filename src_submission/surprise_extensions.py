@@ -1,3 +1,5 @@
+"""This module contains some extensions for the surprise library to suit or train/test data format. The CustomReader class was used to get our data into the surprise Dataset format.
+"""
 from surprise import Reader
 import helpers
 
