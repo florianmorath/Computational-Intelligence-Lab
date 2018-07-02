@@ -55,9 +55,16 @@ def load_ratings_from_file_path(file_path):
 
 
 def write_submission(ratings, file_name):
-    # Build output string
+    """This function writes the predicted ratings back to a csv file
+    Args:
+        ratings (list): A list of tuples. The tuples are of the form (userId, movieId, rating)
+        file_name (str): The name of the file in which the predicted ratings are written
+    """
+    # Build output string to write into the file
     output = "Id,Prediction\n"
     for (row, col, rat) in ratings:
+        # every line is of the format 'rX_cY,R' where X and Y correspond to row(user) and column(movie) indices and R is the rating
+        # we have do increase row and col by one because numpy arrays use 0-base indexing while movie/user indices start at 1
         output += "r%d_c%d,%f\n" % (row + 1, col + 1, rat)
     
     # Write file 
@@ -66,12 +73,12 @@ def write_submission(ratings, file_name):
         
     return output
 
-from helpers import load_ratings_from_file_path, get_train_file_path, get_test_file_path, write_submission
-import numpy as np
-
-# Matrix helper functions
             
 def load_data():
+    """This function build up a rating matrix from the ratings found in the training data file
+    Returns:
+        numpy.ndarray: The rating matrix
+    """
     # X has dim (USER_COUNT x ITEM_COUNT)
     USER_COUNT = 10000
     ITEM_COUNT = 1000
@@ -84,6 +91,10 @@ def load_data():
     return X
 
 def load_pred_data():
+    """This function build up a rating matrix from the ratings found in the test data file
+    Returns:
+        numpy.ndarray: The rating matrix
+    """
     # X has dim (USER_COUNT x ITEM_COUNT)
     USER_COUNT = 10000
     ITEM_COUNT = 1000
@@ -97,11 +108,22 @@ def load_pred_data():
 
 
 def get_prediction_ratings_from_matrix(X_pred):
+    """This function builds a list of tuples containg userId, movieId and the corresponding predicted rating
+    Args:
+        X_pred (numpy.ndarray): The rating matrix filled with our predicted ratings
+    Returns:
+        list: A list of tuples of the form (userId, movieId, rating)
+    """
     ratings = load_ratings_from_file_path(get_test_file_path())
     for (row, col, _) in ratings:
         yield row, col, X_pred[row, col]
         
     
 def write_submission_file(X_pred, file_name):
+    """This function writes the predicted ratings back into a csv file
+    Args:
+        X_pred (numpy.ndarray): The matrix containing all the ratings (including our predictions)
+        file_name (str): The name of the file in which the predictions should be stored
+    """
     ratings = get_prediction_ratings_from_matrix(X_pred)
     write_submission(ratings, file_name)
