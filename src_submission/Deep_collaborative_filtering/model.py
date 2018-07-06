@@ -19,10 +19,10 @@ def rmse(y_true, y_pred):
 def get_data():
     
     # train set
-    train = pd.read_csv("foo_train.csv")
+    train = pd.read_csv("train.csv")
 
     # test set
-    test = pd.read_csv("foo_test.csv")
+    test = pd.read_csv("test.csv")
 
     max_user = max(train["userId"].tolist() )
     max_work = max(train["movieId"].tolist() )
