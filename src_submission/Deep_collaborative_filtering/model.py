@@ -66,26 +66,37 @@ def build_model(max_movie_id, max_user_id):
     bias = 1
     
     # inputs
-    # define an input layer by the shape of the tensors it takes
-    w_inputs = Input(shape=(1,), dtype='int32')
-    w = Embedding(max_work+1, dim_embedddings, name="work")(w_inputs)
-    w_bis = Embedding(max_work + 1, bias, name="workbias")(w_inputs)
+    # define an input layer: set the datatype and the the shape of the tensors it takes, the true shape would be (number_of_movies, 1) but number_of_movies is the batch size, and keras ignores the first dimensions (batch_size), so we give a shape (1,)
+    movie_inputs = Input(shape=(1,), dtype='int32')
+    
+    # define an embedding layer with input dimension (max_movie_id+1) and output dimension (dims_of_embedding). This layer takes a positive integer index (movie id) and outputs a tensor of shape (None, 1,dims_of_embedding), where None is the batch dimension. So this actually where the low-dimensional embedding of movies happens
+    movie_embedding = Embedding(max_movie_id+1, dims_of_embedding, name="movie")(movie_inputs)
+    movie_bis = Embedding(max_work + 1, bias, name="moviebias")(movie_inputs)
 
-    # context
-    u_inputs = Input(shape=(1,), dtype='int32')
-    u = Embedding(max_user+1, dim_embedddings, name="user")(u_inputs)
-    u_bis = Embedding(max_user + 1, bias, name="userbias")(u_inputs)
-    o = multiply([w, u])
-    o = Dropout(0.5)(o)
-    o = concatenate([o, u_bis, w_bis])
-    o = Flatten()(o)
-    o = Dense(10, activation="relu")(o)
-    o = Dense(1)(o)
+    # define analogous layers for the users
+    user_inputs = Input(shape=(1,), dtype='int32')
+    user_embedding = Embedding(max_user+1, dims_of_embedding, name="user")(user_inputs)
+    user_bis = Embedding(max_user_id + 1, bias, name="userbias")(user_inputs)
+    
+    # the following layers together basically calculate the dot product of user and movie embedding vectors to predict the corresponding rating
+    # the multiply layer multiplies (element-wise) a list of input tensors (all of same shape) and returns a single tensor of the same shape
+    output = multiply([movie_embedding, user_embedding])
+    # a Dropout layer applies Dropout to the input, which means setting a fraction rate (=0.5) of input units to 0 at each update during training. This helps preventing overfitting.
+    output = Dropout(0.5)(output)
+    # a Concatente layer concatenates a list of input tensors into a single tensor
+    output = concatenate([output, user_bis, movie_bis])
+    # a Flatten layer flattens the input
+    output = Flatten()(output)
+    # just regular densely, connected NN layers, where can define the number of units in the layer (e.g. 10), and the activation function of the units (e.g. 'relu')
+    output = Dense(10, activation="relu")(output)
+    output = Dense(1)(output)
 
-    rec_model = Model(inputs=[w_inputs, u_inputs], outputs=o)
-    rec_model.compile(loss='mae', optimizer='adam', metrics=[rmse])
+    # define a model with its input(s) and output(s)
+    model = Model(inputs=[movie_inputs, user_inputs], outputs=output)
+    # prepare the model for training, choose loss, optimizers and potentially metrics
+    model.compile(loss='mae', optimizer='adam', metrics=[rmse])
 
-    return rec_model
+    return model
 
 def get_array(series):
     return np.array([[element] for element in series])
