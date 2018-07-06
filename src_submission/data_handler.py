@@ -72,9 +72,9 @@ def write_submission(ratings, file_name):
         output_file.write(output)
         
     return output
-
-            
-def load_data():
+     
+    
+def load_train_data():
     """This function build up a rating matrix from the ratings found in the training data file
     Returns:
         numpy.ndarray: The rating matrix
@@ -90,7 +90,8 @@ def load_data():
         X[row, col] = rating
     return X
 
-def load_pred_data():
+
+def load_test_data():
     """This function build up a rating matrix from the ratings found in the test data file
     Returns:
         numpy.ndarray: The rating matrix
@@ -118,12 +119,3 @@ def get_prediction_ratings_from_matrix(X_pred):
     for (row, col, _) in ratings:
         yield row, col, X_pred[row, col]
         
-    
-def write_submission_file(X_pred, file_name):
-    """This function writes the predicted ratings back into a csv file
-    Args:
-        X_pred (numpy.ndarray): The matrix containing all the ratings (including our predictions)
-        file_name (str): The name of the file in which the predictions should be stored
-    """
-    ratings = get_prediction_ratings_from_matrix(X_pred)
-    write_submission(ratings, file_name)
