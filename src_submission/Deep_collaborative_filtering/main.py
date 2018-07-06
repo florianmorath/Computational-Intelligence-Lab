@@ -12,6 +12,7 @@ def rmse(y_true, y_pred):
     return backend.sqrt(backend.mean(backend.square(y_pred - y_true), axis=-1))
 
 def parse_line(line):
+    # parse a line of the form 'rX_cY,R'
     key, value = line.split(",")
     rating = int(value)
     row_string, col_string = key.split("_")
