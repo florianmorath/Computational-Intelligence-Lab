@@ -28,23 +28,28 @@ def rmse(y_true, y_pred):
 	return backend.sqrt(backend.mean(backend.square(y_pred - y_true), axis=-1))
 
 
-def get_data():
+def get_train_data():
     """
-    This function reads in the training and the test data from the csv files
+    This function reads in the training data from the csv file
     Returns:
-        (tuple): a tuple containing the training data set, the test data set as well as the maximum user and movie ids
+        (DataFrame): the training data set
     """
     # train set
     train = pd.read_csv("train.csv")
 
+    return train
+
+def get_test_data():
+    """
+    This function reads in the test data from the csv file
+    Returns:
+        (DataFrame): the test data set
+    """
+
     # test set
     test = pd.read_csv("test.csv")
 
-    max_user_id = max(train["userId"].tolist() )
-    max_movie_id = max(train["movieId"].tolist() )
-
-
-    return train, test, max_user_id, max_movie_id
+    return test
 
 
 def build_model(max_movie_id, max_user_id):
