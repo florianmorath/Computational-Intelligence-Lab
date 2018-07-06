@@ -25,7 +25,7 @@ def rmse(y_true, y_pred):
     Returns:
         (tensor): the RMSE between y_true and y_pred
     """
-	return backend.sqrt(backend.mean(backend.square(y_pred - y_true), axis=-1))
+    return backend.sqrt(backend.mean(backend.square(y_pred - y_true), axis=-1))
 
 
 def get_train_data():
@@ -71,11 +71,11 @@ def build_model(max_movie_id, max_user_id):
     
     # define an embedding layer with input dimension (max_movie_id+1) and output dimension (dims_of_embedding). This layer takes a positive integer index (movie id) and outputs a tensor of shape (None, 1,dims_of_embedding), where None is the batch dimension. So this actually where the low-dimensional embedding of movies happens
     movie_embedding = Embedding(max_movie_id+1, dims_of_embedding, name="movie")(movie_inputs)
-    movie_bis = Embedding(max_work + 1, bias, name="moviebias")(movie_inputs)
+    movie_bis = Embedding(max_movie_id + 1, bias, name="moviebias")(movie_inputs)
 
     # define analogous layers for the users
     user_inputs = Input(shape=(1,), dtype='int32')
-    user_embedding = Embedding(max_user+1, dims_of_embedding, name="user")(user_inputs)
+    user_embedding = Embedding(max_user_id+1, dims_of_embedding, name="user")(user_inputs)
     user_bis = Embedding(max_user_id + 1, bias, name="userbias")(user_inputs)
     
     # the following layers together basically calculate the dot product of user and movie embedding vectors to predict the corresponding rating
